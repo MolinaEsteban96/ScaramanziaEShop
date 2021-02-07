@@ -1,0 +1,22 @@
+{
+  "name": "scaramanzia-e-shop",
+  "version": "1.0.0",
+  "description": "e-commerce con node.js y express",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "ecommerce",
+    "node.js",
+    "nodejs",
+    "express"
+  ],
+  "author": "Esteban Molina",
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "sequelize": "^6.5.0"
+  }
+}

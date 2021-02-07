@@ -1,0 +1,20 @@
+.navbar-brand:hover, a:hover {
+
+    cursor:pointer;
+}
+
+#registerContainer {
+
+    height: 91vh;
+    background: url(/imgs/negocios.jpg);
+}
+
+#registerForm input {
+
+    height: 25px;
+}
+
+.form-bg {
+
+    background: white;
+}
