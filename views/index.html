@@ -7,6 +7,8 @@
     <title>Scaramanzia E-Shop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
     
@@ -27,37 +29,68 @@
                     <input type="text" class="form-control mx-3" placeholder="Buscar" aria-label="Search">
                     <button class="btn btn-outline-light" type="submit">Buscar</button>
                 </form>
-                <ul class="navbar-nav ml-auto">
-                    <li class="navbar-item">
-                        <a class="nav-link active mx-3" @click="control = 2">Regístrate</a>
-                    </li>
-                    <li class="navbar-item">
-                        <a class="nav-link active mx-3" @click="control = 3">Iniciar Sesión</a>
-                    </li>
-                </ul>
+                <div v-if="isToken == false">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="navbar-item">
+                            <a class="nav-link active mx-3" @click="control = 2">Regístrate</a>
+                        </li>
+                        <li class="navbar-item">
+                            <a class="nav-link active mx-3" @click="control = 3">Iniciar Sesión</a>
+                        </li>
+                    </ul>
+                </div>
+                <div v-else>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="navbar-item">
+                            <a class="nav-link active mx-3">Bienvenido {{activeUsername}}!</a>
+                        </li>
+                        <li class="navbar-item">
+                            <a class="nav-link active mx-3">Cerrar sesión</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
         <div v-if="control == 0">
-            <h1>control == 0</h1>
+            <h1>Control == 0</h1>
         </div>
         <div v-if="control == 1">
-            <div class="container">
-                <h1>control == 1</h1>
+            <div class="container-fluid publishContainer">
+                <div class="row">
+                    <div class="col-md-6 mt-5 py-5 text-center">
+                        <h1 class="publishTitle mt-5 py-3">Comprá y vendé <span class="titleSpan px-2">con solo un click.</span></h1>
+                    </div>
+                    <div class="col-md-6">
+                        <div v-if="isToken == false">
+                            <div class="row mt-5 py-5">
+                                <button class="btn btn-dark mt-5 publishButton" @click="control = 2">Registrate</button>
+                            </div>
+                            <div class="row">
+                                <button class="btn btn-dark publishButton" @click="control = 3">¿Ya tenes una cuenta? Ingresá</button>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <div class="row mt-5">
+                                <button class="btn btn-dark mt-5 py-5 publishButton">Comienza a publicar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div v-if="control == 2">
-            <div class="container-fluid" id="registerContainer">
+            <div class="container-fluid registerContainer">
                 <div class="row">
                     <div class="col-md-12 text-center text-white mt-3 mb-3">
                         <h1>Unete y empieza a publicar!</h1>
                     </div>
                 </div>
-                <form action="" id="registerForm">
+                <form action="/registerUser" method="POST" id="registerForm">
                     <div class="row justify-content-center">
                         <div class="col-md-4 p-3 text-center form-bg">
                             <div class="form-group mt-5">
                                 <label for="username">Nombre de usuario</label>
-                                <input type="text" class="form-control mt-2" maxlength="16" id="username">
+                                <input type="text" class="form-control mt-2" maxlength="16" name="username" id="username">
                             </div>
                         </div>
                     </div>
@@ -65,7 +98,7 @@
                         <div class="col-md-4 p-3 text-center form-bg">
                             <div class="form-group">
                                 <label for="email">Dirección de correo electrónico</label>
-                                <input type="email" id="email" maxlength="40" class="form-control mt-2" id="username">
+                                <input type="email" id="email" maxlength="40" name="email" class="form-control mt-2" id="email">
                             </div>
                         </div>
                     </div>
@@ -73,26 +106,55 @@
                         <div class="col-md-2 p-3 text-center form-bg">
                             <div class="form-group">
                                 <label for="password1">Contraseña</label>
-                                <input type="password" id="password1" maxlength="16" v-model="password" class="form-control mt-2" id="username">
+                                <input type="password" id="password1" maxlength="16" name="password" v-model="password" class="form-control mt-2">
                             </div>
                         </div>
                         <div class="col-md-2 p-3 text-center form-bg">
                             <div class="form-group">
                                 <label for="password2">Repetir contraseña</label>
-                                <input type="password" id="password2" maxlength="16" v-model="password2" class="form-control mt-2" id="username">
+                                <input type="password" id="password2" maxlength="16" v-model="password2" class="form-control mt-2">
                             </div>
                         </div>
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-md-4 p-3 text-center form-bg">
-                            <button type="submit" :disabled="disabled" class="mb-5 btn btn-outline-dark">Enviar</button>
+                            <button type="submit" :disabled="disabled" class="mb-5 btn btn-outline-success">Enviar</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
         <div v-if="control == 3">
-            <h1>Control == 3</h1>
+            <div class="container-fluid loginContainer">
+                <div class="row">
+                    <div class="col-md-12 text-center text-white mt-3 mb-3">
+                        <h1>Ingresa a tu cuenta</h1>
+                    </div>
+                </div>
+                <form action="/loginUser" method="POST" id="registerForm">
+                    <div class="row justify-content-center">
+                        <div class="col-md-4 p-3 text-center form-bg">
+                            <div class="form-group mt-5">
+                                <label for="username">Nombre de usuario</label>
+                                <input type="text" class="form-control mt-2" maxlength="16" name="loginusername" id="username">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-4 p-3 text-center form-bg">
+                            <div class="form-group">
+                                <label for="password1">Contraseña</label>
+                                <input type="password" id="password1" maxlength="16" name="loginpassword" class="form-control mt-2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-4 p-3 text-center form-bg">
+                            <button type="submit" class="mb-5 btn btn-outline-success">Enviar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     

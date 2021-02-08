@@ -9,11 +9,34 @@ const app = new Vue({
         password : "",
         password2 : "",
         disabled : true,
+        isToken : false,
+        activeUsername : "",
     },
 
     methods: {
+    
+    },
 
+    created() {
+        
+        try{
+            let cookies = decodeURIComponent(document.cookie)
+            let cookiesList = cookies.split(";")
+            let token = cookiesList[0].slice(6)
+            let username = cookiesList[1].slice(10)
+            if (token != null) {
 
+                this.isToken = true
+                this.activeUsername = username
+            } else {
+
+                this.isToken = false
+            }
+            console.log(username)
+        } catch {
+
+            return
+        }
     },
 
     updated() {
@@ -23,9 +46,15 @@ const app = new Vue({
             return this.disabled = false;
         }
 
-        else {
+        else if (this.password != this.password2 || this.password == "" || this.password2 == "") {
 
-            return this.disabled = true;
+            return this.disabled = "true"
         }
+
+        if (this.loginusername != "") {
+
+            return this.logindisabled = false;
+        }
+
     },
 })

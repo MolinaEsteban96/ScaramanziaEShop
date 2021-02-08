@@ -3,10 +3,23 @@
     cursor:pointer;
 }
 
-#registerContainer {
+.registerContainer {
 
     height: 91vh;
     background: url(/imgs/negocios.jpg);
+}
+
+.loginContainer {
+
+    height: 91vh;
+    background: url(/imgs/ciudad.jpg);
+}
+
+.publishContainer {
+
+    height: 91vh;
+    background: url(/imgs/oficina.jpg);
+    background-position: 25% bottom;
 }
 
 #registerForm input {
@@ -16,5 +29,24 @@
 
 .form-bg {
 
-    background: white;
+    color: white;
+}
+
+.publishButton {
+
+    width: 50%;
+    position: relative;
+    left: 25%;
+}
+
+.publishTitle {
+
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+.titleSpan {
+
+    background: black;
+    border-radius: 20px;
 }
