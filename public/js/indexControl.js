@@ -11,10 +11,17 @@ const app = new Vue({
         disabled : true,
         isToken : false,
         activeUsername : "",
+        imageUrl: ""
     },
 
     methods: {
     
+        deleteCookies: function() {
+
+            document.cookie = "token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+            document.cookie = "username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+            document.location.reload();
+        }
     },
 
     created() {

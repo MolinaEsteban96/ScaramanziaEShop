@@ -24,7 +24,7 @@ const sequelize = new Sequelize(settings.database, settings.database_username, s
 
 const User = sequelize.define("User", {
 
-    userId : {
+    Id : {
 
         type: DataTypes.INTEGER,
         primaryKey : true,
@@ -64,6 +64,50 @@ const User = sequelize.define("User", {
         }
     }
 })
+
+const Product = sequelize.define("Product", {
+
+    id : {
+
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+
+    name: {
+
+        type: DataTypes.STRING(70),
+        allowNull: false,
+    },
+
+    description: {
+
+        type: DataTypes.TEXT,
+        allowNull: false,
+    },
+
+    quantity : {
+
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+
+    price: {
+
+        type: DataTypes.FLOAT,
+        allowNull: false
+    },
+
+    imageUrl: {
+
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+
+})
+
+User.hasMany(Product);
+Product.User = Product.belongsTo(User);
 
 /*INCIALIZACION DE EXPRESS*/
 
@@ -107,6 +151,7 @@ app.use("/loginUser", async(req,res,next) =>{
     })
 })
 
+
 /*ROUTES*/
 
 app.get("/" , (req, res) => {
@@ -141,6 +186,32 @@ app.post("/loginUser", async(req, res) =>{
     const token = await jwt.sign(req.body.loginusername, process.env.TOKEN);
     await res.cookie("token", token)
     await res.cookie("username", req.body.loginusername)
+    await res.redirect("/");
+})
+
+app.get("/publish", (req,res) => {
+
+    res.sendFile(path.join(__dirname + "/views/postProduct.html"))
+})
+
+app.post("/postProduct", async(req,res) => {
+
+    const usuario = await User.findOne({where: req.body.productUsername})
+
+    await console.log(usuario.dataValues.Id);
+
+    await Product.create({
+
+        name: req.body.productName,
+        description: req.body.productDescription,
+        quantity: req.body.productQuantity,
+        price: req.body.productPrice,
+        imageUrl: req.body.productImageUrl,
+        UserId: usuario.dataValues.Id
+    })
+
+    await console.log("Producto registrado!");
+
     await res.redirect("/");
 })
 
