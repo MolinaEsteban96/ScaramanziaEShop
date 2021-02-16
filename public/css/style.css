@@ -50,3 +50,20 @@
     background: black;
     border-radius: 20px;
 }
+
+.productImage {
+
+    height: 14rem;
+    width: 16rem;
+}
+
+.postImage {
+
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.homeBg {
+
+    background: #faf0e3;
+}

@@ -11,7 +11,8 @@ const app = new Vue({
         disabled : true,
         isToken : false,
         activeUsername : "",
-        imageUrl: ""
+        imageUrl: "",
+        products: []
     },
 
     methods: {
@@ -27,6 +28,10 @@ const app = new Vue({
     created() {
         
         try{
+            fetch("/getProducts")
+                .then(response => response.json())
+                .then(data => this.products = data)
+
             let cookies = decodeURIComponent(document.cookie)
             let cookiesList = cookies.split(";")
             let token = cookiesList[0].slice(6)

@@ -52,7 +52,16 @@
             </div>
         </nav>
         <div v-if="control == 0">
-            <h1>Control == 0</h1>
+            <div class="container homeBg">
+                <div v-for="product in products" class="d-inline-flex">
+                    <div class="text-center p-5">
+                        <a :href="/publication/ + product.id">
+                            <img :src="product.imageUrl" class="productImage" alt="productImage">
+                            <p class="publishTitle py-2 bg-dark">{{product.name}}</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
         <div v-if="control == 1">
             <div class="container-fluid publishContainer">

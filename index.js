@@ -7,6 +7,7 @@ const fs = require("fs");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+const ejs = require("ejs");
 
 /*SETTINGS.JSON*/
 
@@ -117,6 +118,8 @@ const app = Express();
 
 app.use(Express.static(__dirname + '/public'));
 
+app.set('view engine', 'ejs');
+
 app.use(Express.urlencoded({extended : true}))
 
 app.use("/registerUser", async(req,res,next) => {
@@ -151,6 +154,18 @@ app.use("/loginUser", async(req,res,next) =>{
     })
 })
 
+app.use("/getProducts", async(req,res,next) => {
+
+    const products = await Product.findAll();
+    var productsData = []
+    await products.forEach(element => {
+
+        productsData.push(element.dataValues)
+    })
+
+    res.locals.products = productsData
+    next()
+})
 
 /*ROUTES*/
 
@@ -213,6 +228,19 @@ app.post("/postProduct", async(req,res) => {
     await console.log("Producto registrado!");
 
     await res.redirect("/");
+})
+
+app.get("/getProducts", async(req,res) => {
+
+    res.send(res.locals.products)
+})
+
+app.get("/publication/:id", async(req,res) => {
+
+    var product = await Product.findByPk(req.params.id)
+    await console.log(product.dataValues)
+
+    await res.render("publication", {product: product.dataValues})
 })
 
 /*LISTEN*/
